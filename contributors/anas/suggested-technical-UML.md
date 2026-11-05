@@ -182,20 +182,7 @@ classDiagram
 
 **Design note:** `getLastReturnedChange()` is proposed to let the console report automatic change without parsing business messages. It represents the change from the most recent *successful purchase*; the team should document this explicitly. A richer purchase-result value object would be a reasonable future alternative, but is outside this workshop-sized design.
 
-## 4. Suggested implementation sequence
-
-1. **Model:** Review both UML diagrams and settle class responsibilities and method signatures before coding.
-2. **Product hierarchy:** Implement `Product` and the three concrete subclasses, including validation and descriptions.
-3. **Machine contract:** Implement the `VendingMachine` interface and `PurchaseException`.
-4. **Business logic:** Implement `VendingMachineImpl`, including transactional-style validation before state changes.
-5. **Console:** Build `ConsoleUI`, delegating all operations to `VendingMachine`.
-6. **Composition root:** Implement `Main`, constructing sample products and connecting the UI to the machine.
-7. **Tests:** Write JUnit 5 tests directly against machine behaviour, then build the runnable JAR.
-8. **Review:** Verify the code and diagrams stay aligned; commit and push to GitHub.
-
-JUnit coverage should include the seven mandatory workshop cases: valid coin, invalid coin, successful purchase, insufficient balance, out-of-stock purchase, return change, and product listing. Suggested additional checks: automatic change, missing product, duplicate IDs, invalid constructor arguments, list protection, and polymorphic descriptions.
-
-## 5. Reference implementation and execution
+## 4. Reference implementation and execution
 
 A Java reference implementation accompanies this suggested design in `src/main/java/se/lexicon/vending`, with tests in `src/test/java/se/lexicon/vending`. Its presence does **not** turn this proposal into an additional workshop requirement.
 
