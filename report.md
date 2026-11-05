@@ -21,12 +21,3 @@ Anas came with a suggested overall UML for how we should build our code and Tuku
 Both had about the same structure, but we decided with Tukue's UML to code after.
 
 A payment method was missing that we discussed which wwe add to the UML.
-
-Our meeting lasted from 10:00 to 12:00 and we agreed to continue at 14:00
-
-We had a Quick recap meeting at 14:00
-
-Jay wrote Product.java and Snack.java Beverage.java and Fruit.java
-
-Carl wrote the Payment.java
-
