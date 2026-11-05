@@ -15,7 +15,7 @@
 | Member | Module | Responsibility |
 |---|---|---|
 | Member 1 | Product Model | Product, Snack, Beverage, Fruit |
-| Member 2 | Product Catalog | ProductCatalog and List<Product> |
+| Member 2 | Purchase Result | Purchase Products |
 | Member 3 | Payment Management | Payment and coin validation |
 | Member 4 | Vending Machine Logic | VendingMachine and VendingMachineImpl |
 | Member 5 | Console Application | ConsoleUI, Main, and runnable JAR |
@@ -24,7 +24,7 @@
 ### Team Responsibilities
 
 - [ ] Coordinate all six team members. - Padma
-- [ ] Finalize the domain model and UML diagram.
+- [x] Finalize the domain model and UML diagram.
 - [x] Distribute and monitor tasks. - Padma
 - [ ] Coordinate integration between modules.
 - [ ] Organize coding reviews.
@@ -54,7 +54,7 @@
 
 ---
 
-# 3. Member 1 — Product Model and Inheritance
+# 3. Jay — Product Model and Inheritance
 
 **Classes:**
 - `Product` (Abstract Class)
@@ -125,39 +125,42 @@
 
 # 4. Member 2 — Product Catalog and Inventory
 
-**Class:** `ProductCatalog`
+**Class:** `PurchaseResult`
 
-## Fields
+**Responsibility:** Represent the outcome of a purchase attempt.
 
-- [ ] `List<Product> products`
-- [ ] Initialize the list using `ArrayList<Product>`.
+#### Fields
+- [ ] `private final PurchaseStatus status`
+- [ ] `private final Optional<Product> product`
+- [ ] `private final int missingAmount`
+- [ ] `private final int changeReturned`
 
-## Methods
+#### Methods
+- [ ] `isSuccessful(): boolean`
+- [ ] `getStatus(): PurchaseStatus`
+- [ ] `getProduct(): Optional<Product>`
+- [ ] `getMissingAmount(): int`
+- [ ] `getChangeReturned(): int`
 
-- [ ] `addProduct(Product product)`
-- [ ] `getProductById(int id)`
-- [ ] `getAllProducts()`
-- [ ] Prevent duplicate product IDs.
-- [ ] Prevent null products from being added.
-- [ ] Preserve insertion order when displaying products.
-- [ ] Ensure the internal list cannot be modified unexpectedly by other classes.
-- [ ] Share method signatures with Members 4 and 5.
+#### PurchaseStatus Enum
+- [ ] SUCCESS
+- [ ] PRODUCT_NOT_FOUND
+- [ ] OUT_OF_STOCK
+- [ ] INSUFFICIENT_BALANCE
 
-## Implementation Concepts
-
-- List
-- ArrayList
-- Generics
-- For loops
-- Encapsulation
-- Object references
+#### Concepts
+- [ ] Encapsulation
+- [ ] Immutability
+- [ ] Enumeration
+- [ ] Optional
+- [ ] Object relationships
 
 ## Relationships
-
-- One ProductCatalog contains multiple Product objects.
-- ProductCatalog stores Snack, Beverage, and Fruit through the parent type Product.
-
-**Important:** Use List/ArrayList and basic loops for product storage and ID searching. Do not introduce Maps, Streams, or databases.
+- `VendingMachine` returns a `PurchaseResult` when `purchaseProduct()` is called.
+- `VendingMachineImpl` creates and returns a `PurchaseResult` to communicate the purchase outcome.
+- `PurchaseResult` holds an optional `Product` object when a purchase is successful.
+- `PurchaseResult` uses `PurchaseStatus` to represent the purchase outcome.
+- `PurchaseResult` can reference `Snack`, `Beverage`, or `Fruit` through the parent class `Product`.
 
 ---
 
