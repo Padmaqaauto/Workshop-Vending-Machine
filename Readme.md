@@ -14,24 +14,24 @@
 
 | Member | Module | Responsibility |
 |---|---|---|
-| Member 1 | Product Model | Product, Snack, Beverage, Fruit |
-| Member 2 | Product Catalog | ProductCatalog and List<Product> |
-| Member 3 | Payment Management | Payment and coin validation |
-| Member 4 | Vending Machine Logic | VendingMachine and VendingMachineImpl |
-| Member 5 | Console Application | ConsoleUI, Main, and runnable JAR |
-| Member 6 | JUnit Testing | All required JUnit test cases |
+| Jay, Padma     | Product Model | Product, Snack, Beverage, Fruit |
+| Jay, Padma   | Product Catalog | ProductCatalog and List<Product> |
+| Jay, Padma   | Payment Management | Payment and coin validation |
+| Tukue and Vesalina | Vending Machine Logic | VendingMachine and VendingMachineImpl |
+| Tukue and Vesalina | Console Application | ConsoleUI, Main, and runnable JAR |
+| Anas and Carl | JUnit Testing | All required JUnit test cases |
 
 ### Team Responsibilities
 
 - [ ] Coordinate all six team members. - Padma
-- [ ] Finalize the domain model and UML diagram.
+- [ ] Finalize the domain model and UML diagram. - Anas and Tukue
 - [ ] Distribute and monitor tasks. - Padma
-- [ ] Coordinate integration between modules.
-- [ ] Organize coding reviews.
+- [ ] Coordinate integration between modules. - Tukue and Vesalina
+- [ ] Organize coding reviews. - Everyone
 - [ ] Manage README and final report preparation. - Padma
-- [ ] Prepare Final Report 
+- [ ] Prepare Final Report - Carl
 - [ ] Verify that all work is committed and pushed to GitHub. 
-- [ ] Ensure the final application and runnable JAR work correctly.
+- [ ] Ensure the final application and runnable JAR work correctly. - Tukue and Vesalina
 - [ ] Share the final GitHub repository with the instructor. - Padma
 
 **Important:** Member 6 owns the JUnit test implementation. Members 1–5 should provide the expected behavior and class details to Member 6.
