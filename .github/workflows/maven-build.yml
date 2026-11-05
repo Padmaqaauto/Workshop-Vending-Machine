@@ -26,8 +26,16 @@ jobs:
           java-version: "25"
           cache: maven
 
-      - name: Build and test with Maven
-        run: mvn --batch-mode --no-transfer-progress clean verify
+      - name: Run tests and package with Maven
+        run: mvn --batch-mode --no-transfer-progress clean test package
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-test-reports
+          path: target/surefire-reports/**
+          if-no-files-found: ignore
 
       - name: Upload runnable JAR
         uses: actions/upload-artifact@v4
