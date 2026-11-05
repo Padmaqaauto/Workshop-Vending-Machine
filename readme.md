@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Lexicon Vending Machine — Project Completion Checklist
 
 > **Project scope:** Core Java console application. The console menu is the only user interface. We will use basic Java concepts, classes, inheritance, encapsulation, polymorphism, List/ArrayList, loops, conditionals, switch statements, and Scanner.
@@ -640,3 +641,7 @@ The complete project is ready for submission when:
 - Documentation and diagrams are finalized.
 - The final report is reviewed.
 - The GitHub repository is ready to share with the instructor.
+=======
+# Workshop-Vending-Machine
+The machine stocks three categories of products: snacks, beverages, and fruits.
+>>>>>>> Stashed changes
