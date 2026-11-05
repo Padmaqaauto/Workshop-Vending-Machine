@@ -6,7 +6,7 @@
 >
 > **Team size:** 6 Members [Anas, Carl, Jay, Padma, Tukue, Veselina ]
 > **Target completion:** Monday  
-> **GitHub Repository:** Add your repository URL here.
+> **GitHub Repository:** [Vending-Machine](https://github.com/Padmaqaauto/Workshop-Vending-Machine)
 
 ---
 
@@ -25,10 +25,10 @@
 
 - [ ] Coordinate all six team members. - Padma
 - [ ] Finalize the domain model and UML diagram.
-- [ ] Distribute and monitor tasks. - Padma
+- [x] Distribute and monitor tasks. - Padma
 - [ ] Coordinate integration between modules.
 - [ ] Organize coding reviews.
-- [ ] Manage README and final report preparation. - Padma
+- [ ] Manage README - Padma
 - [ ] Prepare Final Report 
 - [ ] Verify that all work is committed and pushed to GitHub. 
 - [ ] Ensure the final application and runnable JAR work correctly.
@@ -40,8 +40,8 @@
 
 # 2. Project Planning and Design
 
-- [ ] All six members understand the workshop requirements.
-- [ ] Assign module responsibilities to all members.
+- [x] All six members understand the workshop requirements.
+- [x] Assign module responsibilities to all members.
 - [ ] Agree on class names, fields, constructors, and method signatures.
 - [ ] Agree on Java package structure.
 - [ ] Identify relationships between all classes.
