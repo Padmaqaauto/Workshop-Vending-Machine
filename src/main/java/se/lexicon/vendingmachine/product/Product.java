@@ -7,8 +7,12 @@ public abstract class Product {
     private final int price;
     private int quantity;
     protected Product(int id, String name, int price, int quantity) {
+        if (id <= 0) throw new IllegalArgumentException("ID must be positive");
+        if (name == null || name.isBlank()) throw new IllegalArgumentException("Name is required");
+        if (price <= 0) throw new IllegalArgumentException("Price must be positive");
+        if (quantity < 0) throw new IllegalArgumentException("Quantity cannot be negative");
         this.id = id;
-        this.name = name;
+        this.name = name.strip();
         this.price = price;
         this.quantity = quantity;
     }
