@@ -21,7 +21,7 @@ classDiagram
         +getName() String
         +getPrice() int
         +getQuantity() int
-        +describe()* String
+        +describe() String*
         +dispenseOne() boolean
     }
 
