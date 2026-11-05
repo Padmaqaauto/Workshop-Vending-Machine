@@ -1,2 +1,3 @@
 # Workshop-Vending-Machine
-The machine stocks three categories of products: snacks, beverages, and fruits.
+
+Maven project for the vending machine workshop. Application and test code will be added in later steps.
