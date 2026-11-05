@@ -18,7 +18,10 @@ class FruitTest {
     void shouldDescribeFruit() {
         Fruit fruit = new Fruit(3, "Apple", 10, 5, "Sweden");
 
-        assertEquals("Apple - Sweden", fruit.describe());
+        assertEquals(
+            "Apple (Fruit, Sweden)",
+            fruit.describe()
+        );
     }
 
     @Test

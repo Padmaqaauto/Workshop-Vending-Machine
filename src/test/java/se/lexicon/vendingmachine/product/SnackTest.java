@@ -18,7 +18,7 @@ class SnackTest {
     void shouldDescribeSnack() {
         Snack snack = new Snack(1, "Chips", 20, 5, 150);
 
-        assertEquals("Chips - 150g", snack.describe());
+        assertEquals("Chips (Snack, 150g)", snack.describe());
     }
 
     @Test

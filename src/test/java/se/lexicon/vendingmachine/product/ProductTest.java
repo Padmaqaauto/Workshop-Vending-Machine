@@ -97,8 +97,8 @@ class ProductTest {
         Product fruit = new Fruit(3, "Apple", 10, 5, "Sweden");
 
         assertAll(
-                () -> assertEquals("Chips - 100g", snack.describe()),
-                () -> assertEquals("Juice - 250ml", beverage.describe()),
-                () -> assertEquals("Apple - Sweden", fruit.describe()));
+                () -> assertEquals("Chips (Snack, 100g)", snack.describe()),
+                () -> assertEquals("Juice (Beverage, 250ml)", beverage.describe()),
+                () -> assertEquals("Apple (Fruit, Sweden)", fruit.describe()));
     }
 }
