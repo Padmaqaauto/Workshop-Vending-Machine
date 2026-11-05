@@ -1,7 +1,7 @@
 package se.lexicon.vendingmachine.product;
 
 public class Beverage extends Product {
-    private int volumeMl;
+    private final int volumeMl;
     public Beverage(int id, String name, int price, int quantity, int volumeMl) {
         super(id, name, price, quantity);
         if (volumeMl <= 0) throw new IllegalArgumentException("Volume must be positive");
@@ -12,6 +12,6 @@ public class Beverage extends Product {
     }
     @Override
     public String describe() {
-        return getName() + " - " + getVolumeMl() + "ml";
+        return getName() + " (Beverage, " + getVolumeMl() + "ml)";
     }
 }
