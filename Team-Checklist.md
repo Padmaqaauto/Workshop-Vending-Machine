@@ -123,7 +123,7 @@
 
 ---
 
-# 4. Member 2 — Product Catalog and Inventory
+# 4. Padma — Purchase
 
 **Class:** `PurchaseResult`
 
