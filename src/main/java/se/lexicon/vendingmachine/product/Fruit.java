@@ -1,4 +1,4 @@
-package se.lexicon.vendingmachine;
+package se.lexicon.vendingmachine.product;
 
 public class Fruit extends Product {
     private String origin;
