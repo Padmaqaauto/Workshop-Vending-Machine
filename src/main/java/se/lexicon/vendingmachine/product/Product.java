@@ -1,4 +1,4 @@
-package se.lexicon.vendingmachine;
+package se.lexicon.vendingmachine.product;
 
 public abstract class Product {
 

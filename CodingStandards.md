@@ -45,10 +45,10 @@ The project is divided into six modules to enable parallel development.
 
 | Member | Module | Assigned Classes | Responsibility |
 |---|---|---|---|
-| Member 1 | Product Model | Product, Snack, Beverage, Fruit | Product hierarchy and inheritance |
-| Member 2 | Product Catalog | ProductCatalog | Product collection and inventory lookup |
-| Member 3 | Payment Management | Payment | Coin validation and balance management |
-| Member 4 | Vending Machine Logic | VendingMachine, VendingMachineImpl, PurchaseResult | Purchase processing and machine operations |
+| Jay | Product Model | Product, Snack, Beverage, Fruit | Product hierarchy and inheritance |
+|Padma | PurchaseResult | PurchaseResult, PurchaseStatus |Purchase processing |
+| Carl | Payment Management | Payment | Coin validation and balance management |
+| Member 4 | Vending Machine Logic | VendingMachine, VendingMachineImpl | Machine operations |
 | Member 5 | Console Application | ConsoleUI, Main | Console menu, application initialization, runnable JAR |
 | Member 6 | JUnit Testing | VendingMachineImplTest | All mandatory and additional business-logic tests |
 
@@ -79,89 +79,86 @@ Before starting individual development, all members must agree on the following.
 
 ## 3.1 Finalize the Architecture
 
-- [ ] Finalize the domain model diagram.
-- [ ] Finalize the UML class diagram.
-- [ ] Confirm all class names and responsibilities.
-- [ ] Confirm which classes are abstract.
-- [ ] Confirm which classes are interfaces.
-- [ ] Confirm inheritance relationships.
-- [ ] Confirm composition and associations.
-- [ ] Confirm which class owns each responsibility.
-- [ ] Agree on all fields and data types.
-- [ ] Agree on constructors and validation rules.
-- [ ] Agree on method names, parameters, and return types.
-- [ ] Ensure all six members understand the architecture.
+- [x] Finalize the domain model diagram.
+- [x] Finalize the UML class diagram.
+- [x] Confirm all class names and responsibilities.
+- [x] Confirm which classes are abstract.
+- [x] Confirm which classes are interfaces.
+- [x] Confirm inheritance relationships.
+- [x] Confirm composition and associations.
+- [x] Confirm which class owns each responsibility.
+- [x] Agree on all fields and data types.
+- [x] Agree on constructors and validation rules.
+- [x] Agree on method names, parameters, and return types.
+- [x] Ensure all six members understand the architecture.
 
 **Rule:** The approved UML diagram is the reference for implementation. No member should independently change the design without communicating with the team.
 
-## 3.2 Agree on Class and Method Contracts
-
-Parallel development requires all modules to communicate using agreed method signatures.
-
-The following is the proposed contract:
-
-| Class | Method | Responsibility |
-|---|---|---|
-| Product | getDescription() | Return product-specific description |
-| Product | reduceQuantity() | Reduce product stock |
-| Product | isInStock() | Check stock availability |
-| ProductCatalog | addProduct(Product) | Add a product |
-| ProductCatalog | getProductById(int) | Find product by ID |
-| ProductCatalog | getAllProducts() | Return all products |
-| Payment | insertCoin(int) | Validate and insert a coin |
-| Payment | getBalance() | Return current balance |
-| Payment | returnChange() | Return and reset balance |
-| VendingMachine | insertCoin(int) | Accept coin through machine |
-| VendingMachine | getBalance() | Return current machine balance |
-| VendingMachine | getProducts() | Return available products |
-| VendingMachine | purchaseProduct(int) | Process product purchase |
-| VendingMachine | returnChange() | Return remaining balance |
-
-Before implementation:
-
-- [ ] Confirm exact method names.
-- [ ] Confirm parameter types.
-- [ ] Confirm return types.
-- [ ] Confirm constructor parameters.
-- [ ] Confirm exception and validation behaviour.
-- [ ] Confirm how purchase success and failure are communicated.
-- [ ] Share the finalized contracts with all members.
-- [ ] Ensure dependent members use the same method signatures.
-
-The final method contracts must be agreed upon by the team before coding starts.
-
-## 3.3 Finalize Package Structure
+## 3.2 Finalize Package Structure
 
 All members must follow the same Java package structure.
 
 ```text
-src/
-├── main/
-│   └── java/
-│       └── se/lexicon/vendingmachine/
-│           │
-│           ├── model/
-│           │   ├── Product.java
-│           │   ├── Snack.java
-│           │   ├── Beverage.java
-│           │   └── Fruit.java
-│           │
-│           ├── inventory/
-│           │   └── ProductCatalog.java
-│           │
-│           ├── payment/
-│           │   └── Payment.java
-│           │
-│           ├── service/
-│           │   ├── VendingMachine.java
-│           │   ├── VendingMachineImpl.java
-│           │   └── PurchaseResult.java
-│           │
-│           └── ui/
-│               ├── ConsoleUI.java
-│               └── Main.java
+Workshop-Vending-Machine/
 │
-└── test/
-    └── java/
-        └── se/lexicon/vendingmachine/
-            └── VendingMachineImplTest.java
+├── README.md
+├── checklist.md
+├── .gitignore
+├── pom.xml                         
+│
+├── docs/
+│   ├── domain-model.png
+│   ├── uml-class-diagram.png
+│   └── final-report.md
+│
+└── src/
+    │
+    ├── main/
+    │   └── java/
+    │       └── se/
+    │           └── lexicon/
+    │               └── vendingmachine/
+    │                   │
+    │                   ├── app/
+    │                   │   └── Main.java
+    │                   │
+    │                   ├── product/
+    │                   │   ├── Product.java
+    │                   │   ├── Snack.java
+    │                   │   ├── Beverage.java
+    │                   │   └── Fruit.java
+    │                   │
+    │                   ├── payment/
+    │                   │   ├── Payment.java
+    │                   │   └── CoinDenomination.java
+    │                   │
+    │                   ├── purchase/
+    │                   │   ├── Purchase.java
+    │                   │   └── PurchaseStatus.java
+    │                   │
+    │                   ├── machine/
+    │                   │   ├── VendingMachine.java
+    │                   │   └── VendingMachineImpl.java
+    │                   │
+    │                   └── ui/
+    │                       └── ConsoleUI.java
+    │
+    └── test/
+        └── java/
+            └── se/
+                └── lexicon/
+                    └── vendingmachine/
+                        │
+                        ├── product/
+                        │   ├── SnackTest.java
+                        │   ├── BeverageTest.java
+                        │   └── FruitTest.java
+                        │
+                        ├── payment/
+                        │   └── PaymentTest.java
+                        │
+                        ├── purchase/
+                        │   └── PurchaseTest.java
+                        │
+                        └── machine/
+                            └── VendingMachineImplTest.java
