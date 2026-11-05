@@ -14,9 +14,9 @@
 
 | Member | Module | Responsibility |
 |---|---|---|
-| Member 1 | Product Model | Product, Snack, Beverage, Fruit |
-| Member 2 | Product Catalog | ProductCatalog and List<Product> |
-| Member 3 | Payment Management | Payment and coin validation |
+| Jay | Product Model | Product, Snack, Beverage, Fruit |
+| Padma | Purchase Result | Purchase Products |
+| Carl | Payment Management | Payment and coin validation |
 | Member 4 | Vending Machine Logic | VendingMachine and VendingMachineImpl |
 | Member 5 | Console Application | ConsoleUI, Main, and runnable JAR |
 | Member 6 | JUnit Testing | All required JUnit test cases |
@@ -24,7 +24,7 @@
 ### Team Responsibilities
 
 - [ ] Coordinate all six team members. - Padma
-- [ ] Finalize the domain model and UML diagram.
+- [x] Finalize the domain model and UML diagram.
 - [x] Distribute and monitor tasks. - Padma
 - [ ] Coordinate integration between modules.
 - [ ] Organize coding reviews.
@@ -42,19 +42,19 @@
 
 - [x] All six members understand the workshop requirements.
 - [x] Assign module responsibilities to all members.
-- [ ] Agree on class names, fields, constructors, and method signatures.
-- [ ] Agree on Java package structure.
-- [ ] Identify relationships between all classes.
-- [ ] Finalize the domain model diagram.
-- [ ] Create the UML class diagram with fields and methods.
-- [ ] Include inheritance relationships and multiplicities.
-- [ ] Review the diagrams together.
-- [ ] Ensure the diagrams match the planned implementation.
-- [ ] Commit the approved diagrams to GitHub.
+- [x] Agree on class names, fields, constructors, and method signatures.
+- [x] Agree on Java package structure.
+- [x] Identify relationships between all classes.
+- [x] Finalize the domain model diagram.
+- [x] Create the UML class diagram with fields and methods.
+- [x] Include inheritance relationships and multiplicities.
+- [x] Review the diagrams together.
+- [x] Ensure the diagrams match the planned implementation.
+- [x] Commit the approved diagrams to GitHub.
 
 ---
 
-# 3. Member 1 — Product Model and Inheritance
+# 3. Jay — Product Model and Inheritance
 
 **Classes:**
 - `Product` (Abstract Class)
@@ -66,47 +66,47 @@
 
 **Fields:**
 
-- [ ] `id`
-- [ ] `name`
-- [ ] `price`
-- [ ] `quantity`
+- [x] `id`
+- [x] `name`
+- [x] `price`
+- [x] `quantity`
 
 **Methods:**
 
-- [ ] Constructor with validation.
-- [ ] Getters for required fields.
-- [ ] Abstract method `getDescription()`.
-- [ ] Method to check product availability.
-- [ ] Method to reduce stock by one.
+- [x] Constructor with validation.
+- [x] Getters for required fields.
+- [x] Abstract method `getDescription()`.
+- [x] Method to check product availability.
+- [x] Method to reduce stock by one.
 
 ## Subclasses
 
 ### Snack
 
-- [ ] Add `weightGrams` field.
-- [ ] Implement constructor.
-- [ ] Override `getDescription()`.
+- [x] Add `weightGrams` field.
+- [x] Implement constructor.
+- [x] Override `getDescription()`.
 
 ### Beverage
 
-- [ ] Add `volumeMl` field.
-- [ ] Implement constructor.
-- [ ] Override `getDescription()`.
+- [x] Add `volumeMl` field.
+- [x] Implement constructor.
+- [x] Override `getDescription()`.
 
 ### Fruit
 
-- [ ] Add `origin` field.
-- [ ] Implement constructor.
-- [ ] Override `getDescription()`.
+- [x] Add `origin` field.
+- [x] Implement constructor.
+- [x] Override `getDescription()`.
 
 ## Validation and Review
 
-- [ ] Make all fields private.
-- [ ] Validate constructor inputs.
-- [ ] Ensure Product is abstract.
-- [ ] Ensure subclasses inherit from Product.
-- [ ] Ensure each subclass provides its own description.
-- [ ] Share final class and method signatures with other members.
+- [x] Make all fields private.
+- [x] Validate constructor inputs.
+- [x] Ensure Product is abstract.
+- [x] Ensure subclasses inherit from Product.
+- [x] Ensure each subclass provides its own description.
+- [x] Share final class and method signatures with other members.
 
 **OOP Concepts:**
 
@@ -123,41 +123,43 @@
 
 ---
 
-# 4. Member 2 — Product Catalog and Inventory
+# 4. Padma — Purchase
 
-**Class:** `ProductCatalog`
+**Class:** `PurchaseResult`
 
-## Fields
+**Responsibility:** Represent the outcome of a purchase attempt.
 
-- [ ] `List<Product> products`
-- [ ] Initialize the list using `ArrayList<Product>`.
+#### Fields
+- [x] `private final PurchaseStatus status`
+- [x] `private final Optional<Product> product`
+- [x] `private final int missingAmount`
+- [x] `private final int changeReturned`
 
-## Methods
+#### Methods
+- [x] `isSuccessful(): boolean`
+- [x] `getStatus(): PurchaseStatus`
+- [x] `getProduct(): Optional<Product>`
+- [x] `getMissingAmount(): int`
+- [x] `getChangeReturned(): int`
 
-- [ ] `addProduct(Product product)`
-- [ ] `getProductById(int id)`
-- [ ] `getAllProducts()`
-- [ ] Prevent duplicate product IDs.
-- [ ] Prevent null products from being added.
-- [ ] Preserve insertion order when displaying products.
-- [ ] Ensure the internal list cannot be modified unexpectedly by other classes.
-- [ ] Share method signatures with Members 4 and 5.
+#### PurchaseStatus Enum
+- [x] SUCCESS
+- [x] PRODUCT_NOT_FOUND
+- [x] OUT_OF_STOCK
+- [x] INSUFFICIENT_BALANCE
 
-## Implementation Concepts
-
-- List
-- ArrayList
-- Generics
-- For loops
-- Encapsulation
-- Object references
+#### Concepts
+- [x] Encapsulation
+- [x] Immutability
+- [x] Enumeration
+- [x] Object relationships
 
 ## Relationships
-
-- One ProductCatalog contains multiple Product objects.
-- ProductCatalog stores Snack, Beverage, and Fruit through the parent type Product.
-
-**Important:** Use List/ArrayList and basic loops for product storage and ID searching. Do not introduce Maps, Streams, or databases.
+- `VendingMachine` returns a `PurchaseResult` when `purchaseProduct()` is called.
+- `VendingMachineImpl` creates and returns a `PurchaseResult` to communicate the purchase outcome.
+- `PurchaseResult` holds an optional `Product` object when a purchase is successful.
+- `PurchaseResult` uses `PurchaseStatus` to represent the purchase outcome.
+- `PurchaseResult` can reference `Snack`, `Beverage`, or `Fruit` through the parent class `Product`.
 
 ---
 
@@ -501,17 +503,6 @@ Define the required operations:
 - [ ] Check that relevant JUnit tests pass.
 - [ ] Check that the JAR launches successfully.
 - [ ] Approve and merge only after review.
-
-## Suggested Peer Review Allocation
-
-| Code Owner | Reviewer |
-|---|---|
-| Member 1 | Member 2 |
-| Member 2 | Member 3 |
-| Member 3 | Member 4 |
-| Member 4 | Member 5 |
-| Member 5 | Member 6 |
-| Member 6 | Member 1 |
 
 ---
 
