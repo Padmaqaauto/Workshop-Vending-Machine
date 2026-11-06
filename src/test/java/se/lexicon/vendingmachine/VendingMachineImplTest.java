@@ -1,7 +1,7 @@
 package se.lexicon.vendingmachine;
 
 import org.junit.jupiter.api.Test;
-import se.lexicon.payment.Payment;
+import se.lexicon.vendingmachine.payment.Payment;
 import se.lexicon.vendingmachine.catalog.ProductCatalog;
 import se.lexicon.vendingmachine.product.Beverage;
 import se.lexicon.vendingmachine.product.Fruit;
