@@ -35,6 +35,16 @@ public class PurchaseResult {
                     status + " requires a product");
         }
 
+        if (status == PurchaseStatus.SUCCESS && missingAmount != 0) {
+            throw new IllegalArgumentException(
+                    "Successful purchases cannot have a missing amount");
+        }
+
+        if (status == PurchaseStatus.INSUFFICIENT_BALANCE && missingAmount == 0) {
+            throw new IllegalArgumentException(
+                    "Insufficient balance requires a positive missing amount");
+        }
+
         this.status = status;
         this.product = product;
         this.missingAmount = missingAmount;

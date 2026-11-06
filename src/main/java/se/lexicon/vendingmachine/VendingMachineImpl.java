@@ -1,6 +1,6 @@
 package se.lexicon.vendingmachine;
 
-import se.lexicon.payment.Payment;
+import se.lexicon.vendingmachine.payment.Payment;
 import se.lexicon.vendingmachine.catalog.ProductCatalog;
 import se.lexicon.vendingmachine.product.Product;
 import se.lexicon.vendingmachine.purchase.PurchaseResult;
@@ -51,21 +51,22 @@ public final class VendingMachineImpl implements VendingMachine {
         }
 
         Product product = match.get();
-        if (product.getQuantity() == 0) {
-            return PurchaseResult.outOfStock(product);
-        }
+        synchronized (payment) {
+            synchronized (product) {
+                if (product.getQuantity() == 0) {
+                    return PurchaseResult.outOfStock(product);
+                }
 
-        int missingAmount = product.getPrice() - payment.getBalance();
-        if (missingAmount > 0) {
-            return PurchaseResult.insufficientBalance(product, missingAmount);
-        }
+                if (!payment.deductAmount(product.getPrice())) {
+                    int missingAmount = product.getPrice() - payment.getBalance();
+                    return PurchaseResult.insufficientBalance(product, missingAmount);
+                }
 
-        // Both conditions were checked above; these operations now complete the transaction.
-        if (!product.dispenseOne()) {
-            return PurchaseResult.outOfStock(product);
+                // The product monitor prevents stock changing between the check and dispense.
+                product.dispenseOne();
+                int changeReturned = payment.returnChange();
+                return PurchaseResult.success(product, changeReturned);
+            }
         }
-        payment.deductAmount(product.getPrice());
-        int changeReturned = payment.returnChange();
-        return PurchaseResult.success(product, changeReturned);
     }
 }

@@ -1,7 +1,7 @@
 package se.lexicon.vendingmachine;
 
 import org.junit.jupiter.api.Test;
-import se.lexicon.payment.Payment;
+import se.lexicon.vendingmachine.payment.Payment;
 import se.lexicon.vendingmachine.catalog.ProductCatalog;
 import se.lexicon.vendingmachine.product.Beverage;
 import se.lexicon.vendingmachine.product.Fruit;
@@ -29,6 +29,17 @@ class VendingMachineImplTest {
 
         assertFalse(machine.insertCoin(7));
         assertEquals(0, machine.getBalance());
+    }
+
+    @Test
+    void paymentReportsSuccessfulAndFailedDeductions() {
+        Payment payment = new Payment();
+        payment.insertCoin(10);
+
+        assertFalse(payment.deductAmount(20));
+        assertEquals(10, payment.getBalance());
+        assertTrue(payment.deductAmount(5));
+        assertEquals(5, payment.getBalance());
     }
 
     @Test
@@ -143,5 +154,80 @@ class VendingMachineImplTest {
         ProductCatalog catalog = new ProductCatalog();
         catalog.addProduct(product);
         return new VendingMachineImpl(catalog, new Payment());
+    }
+
+    @Test
+    void repeatedPurchasesShouldEventuallyExhaustStock() {
+        Snack snack = new Snack(1, "Chips", 10, 2, 100);
+        VendingMachineImpl machine = machine(snack);
+
+        machine.insertCoin(10);
+        assertEquals(
+                PurchaseStatus.SUCCESS,
+                machine.purchaseProduct(1).getStatus());
+
+        machine.insertCoin(10);
+        assertEquals(
+                PurchaseStatus.SUCCESS,
+                machine.purchaseProduct(1).getStatus());
+
+        machine.insertCoin(10);
+        assertEquals(
+                PurchaseStatus.OUT_OF_STOCK,
+                machine.purchaseProduct(1).getStatus());
+
+        assertEquals(0, snack.getQuantity());
+        assertEquals(10, machine.getBalance());
+    }
+
+    @Test
+    void insufficientBalanceShouldAllowRetryAfterMoreCoins() {
+        Snack snack = new Snack(1, "Chips", 20, 2, 100);
+        VendingMachineImpl machine = machine(snack);
+
+        machine.insertCoin(10);
+
+        var firstAttempt = machine.purchaseProduct(1);
+        assertEquals(
+                PurchaseStatus.INSUFFICIENT_BALANCE,
+                firstAttempt.getStatus());
+
+        machine.insertCoin(10);
+
+        var secondAttempt = machine.purchaseProduct(1);
+        assertEquals(
+                PurchaseStatus.SUCCESS,
+                secondAttempt.getStatus());
+
+        assertEquals(0, machine.getBalance());
+        assertEquals(1, snack.getQuantity());
+    }
+
+    @Test
+    void buyingOneProductShouldNotReduceOtherProductsStock() {
+        Snack snack = new Snack(1, "Chips", 10, 3, 100);
+        Beverage drink = new Beverage(2, "Juice", 20, 4, 250);
+
+        ProductCatalog catalog = new ProductCatalog();
+        catalog.addProduct(snack);
+        catalog.addProduct(drink);
+
+        VendingMachineImpl machine = new VendingMachineImpl(catalog, new Payment());
+
+        machine.insertCoin(10);
+        machine.purchaseProduct(1);
+
+        assertEquals(2, snack.getQuantity());
+        assertEquals(4, drink.getQuantity());
+    }
+
+    @Test
+    void returnedProductListShouldNotAllowModification() {
+        VendingMachineImpl machine = machine(new Snack(1, "Chips", 10, 3, 100));
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> machine.getProducts().clear());
+
+        assertEquals(1, machine.getProducts().size());
     }
 }
