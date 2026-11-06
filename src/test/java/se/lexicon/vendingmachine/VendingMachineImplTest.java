@@ -32,6 +32,17 @@ class VendingMachineImplTest {
     }
 
     @Test
+    void paymentReportsSuccessfulAndFailedDeductions() {
+        Payment payment = new Payment();
+        payment.insertCoin(10);
+
+        assertFalse(payment.deductAmount(20));
+        assertEquals(10, payment.getBalance());
+        assertTrue(payment.deductAmount(5));
+        assertEquals(5, payment.getBalance());
+    }
+
+    @Test
     void successfulPurchaseDeductsPriceAndReducesStock() {
         Snack chips = new Snack(1, "Chips", 20, 3, 130);
         VendingMachineImpl machine = machine(chips);
