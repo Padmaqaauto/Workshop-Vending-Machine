@@ -1,5 +1,16 @@
 # Workshop-Vending-Machine
 
+## Build and run the console application
+
+Build the executable JAR from the project root and launch it with:
+
+```bash
+mvn clean package
+java -jar target/workshop-vending-machine-1.0.0.jar
+```
+
+The menu lists the sample snacks, beverages, and fruit. Insert accepted coins (1, 2, 5, 10, 20, or 50 kr), purchase a product by ID, return change, or exit. Run automated tests with `mvn test`.
+
 Maven project for the vending machine workshop. This document captures the planned object model before implementation.
 
 ## Object model
