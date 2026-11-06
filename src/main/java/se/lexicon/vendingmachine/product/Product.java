@@ -30,6 +30,12 @@ public abstract class Product {
 
     }
     public abstract String describe();
+    public final synchronized void restock(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Restock amount must be positive");
+        }
+        quantity += amount;
+    }
     public final synchronized boolean dispenseOne() {
         if (quantity > 0) {
             quantity--;
