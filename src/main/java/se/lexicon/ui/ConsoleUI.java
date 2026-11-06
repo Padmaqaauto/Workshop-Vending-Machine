@@ -71,7 +71,7 @@ public final class ConsoleUI {
 
     private void displayWelcome() {
         System.out.println("\n==============================================");
-        System.out.println("       WELCOME TO LEXICON VENDING MACHINE");
+        System.out.println("       Welcome to the Lexicon Vending Machine!");
         System.out.println("==============================================");
     }
 
