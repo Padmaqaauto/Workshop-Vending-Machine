@@ -7,6 +7,7 @@ import se.lexicon.vendingmachine.payment.Payment;
 import se.lexicon.vendingmachine.product.Beverage;
 import se.lexicon.vendingmachine.product.Fruit;
 import se.lexicon.vendingmachine.product.Snack;
+import se.lexicon.ui.ConsoleUI;
 
 public final class Main {
     private Main() {

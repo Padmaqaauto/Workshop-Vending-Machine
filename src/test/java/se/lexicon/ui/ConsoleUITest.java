@@ -1,4 +1,4 @@
-package se.lexicon;
+package se.lexicon.ui;
 
 import org.junit.jupiter.api.Test;
 import se.lexicon.vendingmachine.VendingMachine;
@@ -9,7 +9,6 @@ import se.lexicon.vendingmachine.product.Beverage;
 import se.lexicon.vendingmachine.product.Fruit;
 import se.lexicon.vendingmachine.product.Product;
 import se.lexicon.vendingmachine.product.Snack;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
