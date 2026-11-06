@@ -63,3 +63,4 @@ We had our meeting at **10:00**, where we reviewed our code together, fixed issu
 - Anas was done with the **JUnit testing**.
 - Jay completed the **restocking function** and pushed it to the **main branch**.
 - Jay also updated the code to fix potential bugs and ran JUnit tests for the **restocking functionality**.
+- Anas updated the `README.md`, UML class diagram, and project checklist. He also tested the console menu and runnable JAR to ensure everything was working correctly.
