@@ -1,4 +1,4 @@
-package se.lexicon;
+package se.lexicon.ui;
 
 import se.lexicon.vendingmachine.VendingMachine;
 import se.lexicon.vendingmachine.product.Product;
