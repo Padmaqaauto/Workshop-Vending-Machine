@@ -3,157 +3,112 @@
 **Project:** Java 25 console vending-machine workshop  
 **Repository:** https://github.com/Padmaqaauto/Workshop-Vending-Machine  
 **Team:** Anas, Carl, Jay, Padma, Tukue, Veselina  
-**Review date:** 6 November 2026  
-**Evidence:** Current `main` source, merged pull requests, GitHub Actions run [42223182591](https://github.com/Padmaqaauto/Workshop-Vending-Machine/actions/runs/42223182591), and team confirmation that the JAR works locally.
+**Status reviewed:** 6 November 2026  
+**Evidence:** merged PRs #20, #24, #25, #26, #27; GitHub Actions main run [42223182591](https://github.com/Padmaqaauto/Workshop-Vending-Machine/actions/runs/42223182591); confirmation of a working local executable JAR.
 
-**Status notation:** `[x]` = evidenced/confirmed; `[ ]` = still needs an explicit final check, decision, or submission action. This checklist records the **implemented application**, not an obsolete proposed API.
+`[x]` = confirmed by repository, automated tests or team feedback. `[ ]` = requires final confirmation or external action. Planned improvements are not submission requirements.
 
-## 1. Architecture and OOP design
+## 1. Application architecture and OOP
 
-- [x] Agree on and implement the product hierarchy: abstract `Product` and `Snack`, `Beverage`, `Fruit` subclasses.
-- [x] Encapsulate product identity, price, and stock; validate constructor arguments.
-- [x] Use `describe()` for polymorphic product descriptions.
-- [x] Implement `VendingMachine` interface and `VendingMachineImpl`.
-- [x] Store products in `ProductCatalog` with `ArrayList<Product>`.
-- [x] Use lookup by unique product ID and return an unmodifiable list snapshot.
-- [x] Separate business rules from console input/output.
-- [x] Use classes, objects, inheritance, interfaces, encapsulation, polymorphism, collections, loops, conditionals, and `Scanner`.
-- [x] Match the README's final UML to actual packages, class responsibilities, method names, and return types (prepared in the revised README accompanying this checklist).
-- [x] Team confirms and merges the revised README/UML documentation.
+- [x] Abstract `Product` with `Snack`, `Beverage` and `Fruit` subclasses.
+- [x] Encapsulated, validated product fields and polymorphic `describe()` implementations.
+- [x] `ProductCatalog` uses `ArrayList<Product>`, ID-based lookup, and an unmodifiable returned list.
+- [x] `VendingMachine` interface and `VendingMachineImpl` separate domain behavior from console I/O.
+- [x] `Payment` manages coin denominations, balance, deductions and refunds.
+- [x] `PurchaseResult` and `PurchaseStatus` represent business outcomes.
+- [x] `Main` initializes application dependencies; `ConsoleUI` handles interaction.
+- [x] Core Java OOP, interfaces, inheritance, encapsulation, polymorphism, collections, loops, conditionals and `Scanner` are demonstrated.
 
-## 2. Product model and inventory — Jay / team
+## 2. Products and inventory — Jay / team
 
-- [x] `Product`: `id`, `name`, `price`, `quantity`, validated constructor, getters.
-- [x] `Product.describe()` is abstract and implemented by each concrete product.
-- [x] `Snack`: weight in grams; `Beverage`: volume in milliliters; `Fruit`: origin.
-- [x] `dispenseOne()` reduces stock by one only when available.
-- [x] Product stock never becomes negative through dispensing.
-- [x] `ProductCatalog.addProduct()` rejects null and duplicate IDs.
-- [x] `ProductCatalog.getProductById()` returns `Optional<Product>`.
-- [x] `ProductCatalog.getAllProducts()` returns an unmodifiable snapshot.
-- [x] Optional enhancement: `Product.restock(int amount)` exists and rejects zero/negative amounts.
-- [x] Restocking-related product tests are included in the green suite.
-- [ ] If restocking is presented as an end-user feature, clarify that it is **API-only**, not an option in the current console menu.
+- [x] `Product` validates ID, name, price and initial quantity.
+- [x] `Snack` holds weight; `Beverage` holds volume; `Fruit` holds origin.
+- [x] `dispenseOne()` reduces stock only when available.
+- [x] Product catalog rejects null and duplicate product IDs.
+- [x] Product lookup and catalog list are tested.
+- [x] Optional improvement: `Product.restock(int)` validates positive amounts and is covered by tests.
+- [x] Restocking is documented as an **API-level improvement**; it is not a console menu option.
 
-## 3. Payment — Carl / team
+## 3. Payment and purchase results — Carl, Padma / team
 
-- [x] Private integer balance maintained by `Payment`.
-- [x] Accept coins of 1, 2, 5, 10, 20, and 50 kr only.
-- [x] Invalid coins leave the balance unchanged.
-- [x] Valid inserted coins increase the balance.
-- [x] `getBalance()` reports current funds.
-- [x] `deductAmount(int)` returns `boolean`, rejects nonpositive or unaffordable deductions, and preserves the balance on failure.
-- [x] `returnChange()` returns remaining money and resets the balance to zero.
-- [x] Payment behavior and failures are covered by unit tests.
+- [x] Accepted coins: 1, 2, 5, 10, 20 and 50 kr.
+- [x] Invalid coins do not change the balance.
+- [x] Valid coins accumulate correctly.
+- [x] `deductAmount(int)` returns a boolean and leaves funds unchanged on failure.
+- [x] `returnChange()` returns the balance and resets it to zero.
+- [x] Purchase status values: `SUCCESS`, `NOT_FOUND`, `INSUFFICIENT_BALANCE`, `OUT_OF_STOCK`.
+- [x] `PurchaseResult` returns the product via `Optional<Product>` and validates status/amount combinations.
+- [x] The two earlier purchase-result validation regressions were fixed and retested.
 
-## 4. Purchase outcome — Padma / team
+## 4. Vending machine and console — Tukue, Veselina / team
 
-- [x] `PurchaseStatus` has `SUCCESS`, `NOT_FOUND`, `INSUFFICIENT_BALANCE`, `OUT_OF_STOCK`.
-- [x] `PurchaseResult` stores final status, product reference, missing amount, and change returned.
-- [x] `getProduct()` returns `Optional<Product>`; the stored field itself is a `Product`, not an `Optional`.
-- [x] Static factory methods exist for each purchase outcome.
-- [x] Constructor rejects null status, invalid amounts, and contradictory status/product combinations.
-- [x] Successful purchase cannot have a positive missing amount.
-- [x] Insufficient-balance result requires a positive missing amount.
-- [x] Purchase-result tests pass.
+- [x] Product lookup, successful purchase, insufficient balance, out of stock and unknown ID handled.
+- [x] Failed purchases preserve stock and funds.
+- [x] Successful purchase deducts payment, reduces stock and returns any change.
+- [x] Console lists products, descriptions, prices, quantities and available balance.
+- [x] Console accepts coins and product IDs, handles invalid input, allows refunds and exits cleanly.
+- [x] Duplicate `Main` class removed; the entry point is `se.lexicon.Main`.
+- [x] Maven JAR manifest references the correct entry point.
+- [x] Executable JAR successfully generated and manually launched.
+- [x] Console application was manually tested and reported working.
 
-## 5. Vending-machine operations — Tukue / Veselina / team
+## 5. Automated verification — Anas, Carl / team
 
-- [x] Implementation receives `ProductCatalog` and `Payment` through its constructor.
-- [x] Machine interface exposes coin insertion, balance, product listing, purchase by ID, and change return.
-- [x] Product IDs are resolved through the catalog.
-- [x] Unknown products return `NOT_FOUND`.
-- [x] Sold-out products return `OUT_OF_STOCK`.
-- [x] Insufficient funds return `INSUFFICIENT_BALANCE` with the missing amount.
-- [x] Failed purchases do not change stock or balance.
-- [x] Successful purchase deducts the price, dispenses one item, and returns automatic change.
-- [x] Machine business logic contains no console input/output.
-- [x] Product types are handled polymorphically, without `instanceof` selection.
-- [x] Unit tests cover exact payment, overpayment, invalid input, unknown IDs, low balance, stock depletion, and change return.
+- [x] Tests cover products, subclasses, catalog, payment, purchase outcomes, machine logic and console behavior.
+- [x] Mandatory vending-machine business scenarios are included.
+- [x] **Latest verified GitHub Actions result: 92 tests, 0 failures, 0 errors, 0 skipped.**
+- [x] Maven compilation, testing and JAR packaging succeed in CI.
+- [x] GitHub Actions successfully uploads the JAR artifact.
+- [x] JUnit contribution merged through PR #20.
+- [ ] Attach a final screenshot or CI evidence to the report **only if required** by the instructor.
 
-## 6. Console application and executable JAR — Tukue / Veselina / team
+## 6. Integration and GitHub
 
-- [x] `se.lexicon.Main` initializes sample products, catalog, payment, machine, and UI.
-- [x] `se.lexicon.ui.ConsoleUI` contains the interactive menu.
-- [x] Displays welcome message, products, descriptions, prices, stock, and balance.
-- [x] Supports coin insertion, purchasing by product ID, manual change return, and exit.
-- [x] Handles invalid menu and numeric input.
-- [x] Displays purchase success and relevant failure messages.
-- [x] Returns remaining balance when exiting or when input ends.
-- [x] Only one application `Main` class remains; previous duplicate-class compilation error was resolved.
-- [x] `pom.xml` declares the JAR manifest main class as `se.lexicon.Main`.
-- [x] `mvn clean verify` generates the application JAR.
-- [x] GitHub Actions uploads the JAR as `vending-machine-jar`.
-- [x] A team member confirmed the executable application launches and works locally.
-- [x] Before instructor demonstration, perform the complete live menu walkthrough from the packaged JAR once more.
+- [x] Business logic, product catalog, payment and test contributions merged to `main`.
+- [x] Console implementation merged to `main` (PRs #24 and #26).
+- [x] Restocking contribution merged to `main` (PR #25).
+- [x] Final documentation PR #27 merged into `main` (commit `f7cd4e5`).
+- [x] Local `main` synchronized with `origin/main` after PR #27; clean working tree reported.
+- [x] Latest checked GitHub Actions run for `main` passed.
+- [x] Team lead confirms there are no submission-blocking unresolved PRs or issues.
 
-## 7. JUnit testing — Anas / Carl / team
+## 7. Documentation
 
-- [x] `PaymentTest` covers coin and balance behavior.
-- [x] `ProductTest`, `SnackTest`, `BeverageTest`, and `FruitTest` cover product validation and behavior.
-- [x] `ProductCatalogTest` covers lookup, duplicates, ordering, and immutability of returned lists.
-- [x] `PurchaseResultTest` covers statuses and constructor invariants.
-- [x] `VendingMachineImplTest` covers machine operations and failure safeguards.
-- [x] `ConsoleUITest` covers menu output, valid and invalid inputs, purchase, refund, and input closure.
-- [x] Seven original mandatory vending-machine scenarios are covered.
-- [x] **Final verified CI result: 92 tests, 0 failures, 0 errors, 0 skipped.**
-- [x] Maven `clean verify` passed on the latest reviewed `main` commit.
-- [x] Previously failing purchase-result validation tests were resolved and merged.
-- [ ] Save/share a final test-run screenshot or CI link with the team report if requested by the instructor.
+- [x] README updated with accurate build/run instructions, architecture and class responsibilities.
+- [x] README Mermaid UML corrected to reflect the implemented class/package structure.
+- [x] OOP principles, purchasing flow, tests, JAR and optional restocking documented.
+- [x] `Team-Checklist.md` prepared and merged in PR #27.
+- [x] `report.md` exists and records team work and project development.
+- [x] `improvement.md` documents proposed future features.
+- [ ] Team lead confirms that the final report is accurate, complete and approved.
 
-## 8. GitHub integration and code review
+## 8. Final submission
 
-- [x] Use feature branches and pull requests for implementation/testing work.
-- [x] Merge JUnit contribution (PR #20) to `main`.
-- [x] Merge console application contribution (PR #24) to `main`.
-- [x] Resolve duplicate `Main` compilation failure.
-- [x] Pass automated GitHub Actions compilation/tests after integration.
-- [x] Upload executable JAR artifact in CI.
-- [ ] Obtain any remaining team/instructor-required review sign-offs.
-- [ ] Merge final documentation updates into `main`.
-- [ ] Confirm the final repository has no outstanding submission-blocking PRs or issues.
+- [x] Required implementation and core functionality completed.
+- [x] Automated test suite passing on `main`.
+- [x] Executable JAR built and run locally.
+- [x] Documentation changes merged into `main`.
+- [ ] Team lead gives final submission approval.
+- [ ] Submit repository link and any required report/JAR/test evidence to the instructor.
 
-## 9. Documentation and final report
+## Team completion overview
 
-- [x] Prepare revised README with project introduction, prerequisites, build/run commands, and feature summary.
-- [x] Prepare corrected UML diagram and actual API/class responsibility table in revised README.
-- [x] Document OOP concepts, purchase workflow, console behavior, and JUnit execution.
-- [x] Document optional `restock()` method and distinguish it from proposed future enhancements.
-- [x] Existing `report.md` records meetings, contributions, development, and team responsibilities.
-- [x] Existing `improvement.md` documents possible future improvements.
-- [x] Team reviews the revised README and checklist and merges them.
-- [x] Team reviews `report.md` for final accuracy and completeness, including recent merges, the final 92-test result, and optional restocking.
-- [x] Correct remaining historical differences in `CodingStandards.md` or label its proposed package structure as superseded by the implemented code.
-- [ ] Obtain team lead approval for final documentation and report.
-
-## 10. Final submission and handoff
-
-- [x] Core product, payment, purchase, inventory, machine, and console features are implemented.
-- [x] Automated tests pass on `main`.
-- [x] Executable JAR is produced successfully.
-- [x] Team member reports the JAR works interactively.
-- [x] Final manual walkthrough: list products, valid/invalid coin, exact payment, overpayment, insufficient balance, out of stock, unknown ID, manual refund, exit.
-- [ ] Merge documentation corrections and check `main` remains green.
-- [ ] Team lead reviews final report and submission contents.
-- [ ] Share the final repository link and any requested evidence/JAR with the instructor.
-
-## 11. Current team completion overview
-
-| Area | State | Evidence / next action |
+| Area | Status | Evidence or action |
 |---|---|---|
-| Product model and catalog | Complete | Implemented; JUnit passing |
-| Payment and purchasing | Complete | Implemented; JUnit passing |
-| Vending-machine logic | Complete | Implemented; JUnit passing |
-| Console UI and Main | Complete | Merged PR #24; console tests passing |
-| JUnit suite | Complete | 92/92 passing in GitHub Actions |
-| Runnable JAR | Complete | CI artifact generated; locally reported working |
-| README and UML | Draft ready | Review and merge the revised README |
-| Project checklist | Draft ready | Review and merge this file |
-| Report / standards consistency | Needs review | Finalize report; reconcile older planning docs |
-| Final instructor submission | Pending | Team lead approval and submission |
+| Product model and catalog | Complete | Implemented and tested |
+| Payment and purchase outcomes | Complete | Implemented and tested |
+| Vending machine business logic | Complete | Implemented and tested |
+| Console UI and Main | Complete | Merged, CI passing, manual run confirmed |
+| Optional product restocking | Complete (API only) | Implemented and tested |
+| JUnit suite | Complete | 92/92 passing in latest verified CI |
+| Runnable JAR | Complete | Packaged, uploaded as CI artifact, manually run |
+| README / final UML | Complete | PR #27 merged |
+| Project checklist | Updated; merge this revision if adopted | This final status correction |
+| Report and coding standards | Final review | Report approval and historical guide cleanup pending |
+| Instructor submission | Pending | Team lead to confirm and submit |
 
 ## Definition of done
 
-**Application build complete:** Implemented classes compile, automated tests pass, the runnable JAR is produced, and the interactive program works.
+**Development complete:** The code compiles; required product, payment, vending and console functionality works; automated tests pass; and the executable JAR runs.
 
-**Workshop submission complete:** Final diagrams and documentation match the code, manual acceptance results are confirmed, report is approved, and the repository is delivered to the instructor.
+**Submission complete:** The team lead accepts the report and final documentation, resolves any submission blockers and delivers the required repository link and artifacts to the instructor.
