@@ -23,13 +23,17 @@ public final class ConsoleUI {
     }
 
     public void run() {
-        System.out.println("Welcome to the Lexicon Vending Machine!");
+        displayWelcome();
+        displayProducts();
+
         boolean running = true;
+
         while (running) {
-            displayProducts();
             displayBalance();
             displayMenu();
+
             String input = readInput("Choose an option: ");
+
             if (input == null) {
                 break;
             }
@@ -41,24 +45,34 @@ public final class ConsoleUI {
                 case "4" -> returnChange();
                 case "0" -> {
                     int change = vendingMachine.returnChange();
+
                     if (change > 0) {
-                        System.out.println("Returning " + change + " kr.");
+                        System.out.println("\nReturning change: " + change + " kr.");
                     }
-                    System.out.println("Thank you for using the vending machine. Goodbye!");
+
+                    System.out.println("\nThank you for using Lexicon Vending Machine!");
+                    System.out.println("Goodbye!");
                     running = false;
                 }
-                default -> System.out.println("Invalid menu option. Please choose 0–4.");
+                default -> System.out.println("\nInvalid option. Please choose between 0 and 4.");
             }
-            displayBalance();
         }
 
         if (running) {
             int change = vendingMachine.returnChange();
+
             if (change > 0) {
-                System.out.println("Returning " + change + " kr.");
+                System.out.println("\nReturning change: " + change + " kr.");
             }
-            System.out.println("Input closed. Goodbye!");
+
+            System.out.println("\nInput closed. Goodbye!");
         }
+    }
+
+    private void displayWelcome() {
+        System.out.println("\n==============================================");
+        System.out.println("       WELCOME TO LEXICON VENDING MACHINE");
+        System.out.println("==============================================");
     }
 
     private void displayProducts() {
