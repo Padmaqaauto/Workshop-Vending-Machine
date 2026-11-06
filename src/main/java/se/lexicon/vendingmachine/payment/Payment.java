@@ -7,7 +7,7 @@ public class Payment {
      * Adds a valid coin to the balance.
      * @param coin The coin value to add.
      */
-    public void insertCoin(int coin) {
+    public synchronized void insertCoin(int coin) {
         if (isValidCoin(coin)) {
             balance += coin;
         }
@@ -27,7 +27,7 @@ public class Payment {
      * Returns the current balance.
      * @return The current balance.
      */
-    public int getBalance() {
+    public synchronized int getBalance() {
         return balance;
     }
 
@@ -35,19 +35,22 @@ public class Payment {
      * Returns the remaining balance and resets it to zero.
      * @return The amount of change returned.
      */
-    public int returnChange() {
+    public synchronized int returnChange() {
         int change = balance;
         balance = 0;
         return change;
     }
 
     /**
-     * Deducts a specified amount from the balance if valid.
+     * Deducts a specified amount when the balance is sufficient.
      * @param amount The amount to deduct.
+     * @return true if the deduction succeeded; otherwise false and the balance is unchanged.
      */
-    public void deductAmount(int amount) {
-        if (amount > 0 && balance >= amount) {
-            balance -= amount;
+    public synchronized boolean deductAmount(int amount) {
+        if (amount <= 0 || balance < amount) {
+            return false;
         }
+        balance -= amount;
+        return true;
     }
 }
