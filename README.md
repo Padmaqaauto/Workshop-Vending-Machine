@@ -17,26 +17,6 @@ A Java 25 console application developed for the Lexicon object-oriented programm
 
 The application stores its sample inventory **in memory**. Stock and balance reset when a new process starts; there is no database or persistent storage.
 
-## Quick start
-
-### Prerequisites
-
-- **JDK 25** (`java -version` and `javac -version`)
-- **Maven** (`mvn -version`)
-
-### Build, test, and run
-
-From the repository root:
-
-```bash
-mvn clean verify
-java -jar target/workshop-vending-machine-1.0.0.jar
-```
-
-`mvn clean verify` compiles production and test classes, runs the JUnit tests, and creates the JAR. The Maven JAR plugin sets the manifest entry point to `se.lexicon.Main`.
-
-To run the application in an IDE, launch `se.lexicon.Main.main(String[] args)`.
-
 ### Console menu
 
 ```text
@@ -47,7 +27,7 @@ To run the application in an IDE, launch `se.lexicon.Main.main(String[] args)`.
 0. Exit
 ```
 
-The program lists products and the balance, and redisplays the menu until the user exits or input ends. Sample inventory is created by `Main`; it includes a snack, two beverages, and a fruit.
+The program lists products and the balance, and re displays the menu until the user exits or input ends. Sample inventory is created by `Main`; it includes a snack, two beverages, and a fruit.
 
 **Example purchase:** Insert 50 kr (`2` then `50`), buy the 20 kr Chocolate Bar (`3` then product ID `1`), and receive the product with **30 kr** returned automatically. The balance becomes zero and the product stock decreases by one.
 
@@ -180,7 +160,7 @@ classDiagram
     ConsoleUI --> VendingMachine : uses
     VendingMachineImpl --> ProductCatalog : uses
     VendingMachineImpl --> Payment : uses
-    ProductCatalog "1" o-- "0..*" Product : stores
+    ProductCatalog "1" -- "0..*" Product : stores
     VendingMachineImpl ..> PurchaseResult : creates
     PurchaseResult --> PurchaseStatus : status
     PurchaseResult --> "0..1" Product : refers to
@@ -237,3 +217,59 @@ The project intentionally uses in-memory products and a console UI; it does not 
 The six workshop members are **Anas, Carl, Jay, Padma, Tukue, and Veselina**. Based on the team report, responsibilities were shared across product modeling, payment, purchase results, vending logic, console development, testing, review, and reporting. Consult [`report.md`](report.md) for the team's contribution history, [`Team-Checklist.md`](Team-Checklist.md) for completion evidence and outstanding handoff tasks, and [`CodingStandards.md`](CodingStandards.md) for the development guide.
 
 The repository source code and tests are the authoritative reference for the implemented API. Historical planning documents may describe earlier class names or package layouts.
+
+## Build and Run the Application
+
+### Prerequisites
+- Java 25 or later
+- Maven
+
+### Clean, Build, Test and Run
+
+Run the following commands from the project root directory in sequence.
+
+**1. Clean previous builds**
+
+```bash
+mvn clean
+```
+
+**2. Run unit tests**
+
+```bash
+mvn test
+```
+
+**3. Package the executable JAR**
+
+```bash
+mvn package
+```
+
+The executable JAR will be generated at:
+
+```text
+target/workshop-vending-machine-1.0.0.jar
+```
+
+**4. Run the application**
+
+```bash
+java -jar target/workshop-vending-machine-1.0.0.jar
+```
+
+The Vending Machine console application will start.
+
+### Run Everything in One Command
+
+Alternatively, clean, test and package the application using:
+
+```bash
+mvn clean package
+```
+
+Then run:
+
+```bash
+java -jar target/workshop-vending-machine-1.0.0.jar
+```
