@@ -101,4 +101,32 @@ class ProductTest {
                 () -> assertEquals("Juice (Beverage, 250ml)", beverage.describe()),
                 () -> assertEquals("Apple (Fruit, Sweden)", fruit.describe()));
     }
+    @Test
+    void shouldRestockProduct() {
+        Product product = new Snack(1, "Chips", 20, 5, 100);
+
+        product.restock(3);
+
+        assertEquals(8, product.getQuantity());
+    }
+
+    @Test
+    void shouldRejectZeroRestockAmount() {
+        Product product = new Snack(1, "Chips", 20, 5, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> product.restock(0));
+
+        assertEquals(5, product.getQuantity());
+    }
+
+    @Test
+    void shouldRejectNegativeRestockAmount() {
+        Product product = new Snack(1, "Chips", 20, 5, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> product.restock(-3));
+
+        assertEquals(5, product.getQuantity());
+    }
 }
