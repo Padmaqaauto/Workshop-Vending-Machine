@@ -40,6 +40,19 @@ class ConsoleUITest {
     }
 
     @Test
+    void displaysEveryProductTypeAndStockInProductList() {
+        VendingMachine machine = new VendingMachineImpl(catalogWithProducts(), new Payment());
+
+        String output = runUi(machine, "0\n");
+
+        assertAll(
+                () -> assertTrue(output.contains("Chocolate Bar (Snack, 50g) | Stock: 3")),
+                () -> assertTrue(output.contains("Mineral Water (Beverage, 500ml) | Stock: 5")),
+                () -> assertTrue(output.contains("Apple (Fruit, Sweden) | Stock: 4"))
+        );
+    }
+
+    @Test
     void reportsInvalidCoinAndInsufficientBalanceWithoutChangingState() {
         ProductCatalog catalog = catalogWithProducts();
         VendingMachine machine = new VendingMachineImpl(catalog, new Payment());
@@ -67,6 +80,50 @@ class ConsoleUITest {
                 () -> assertTrue(output.contains("There is no change to return.")),
                 () -> assertTrue(output.contains("Thank you for using the vending machine.")),
                 () -> assertTrue(output.contains("Current balance: 0 kr."))
+        );
+    }
+
+    @Test
+    void reportsUnknownProductAndOutOfStockSelection() {
+        ProductCatalog catalog = new ProductCatalog();
+        catalog.addProduct(new Snack(1, "Sold Out Chips", 20, 0, 50));
+        VendingMachine machine = new VendingMachineImpl(catalog, new Payment());
+
+        String output = runUi(machine, "3\n999\n3\n1\n0\n");
+
+        assertAll(
+                () -> assertTrue(output.contains("No product found with ID 999.")),
+                () -> assertTrue(output.contains("That product is out of stock.")),
+                () -> assertEquals(0, catalog.getProductById(1).orElseThrow().getQuantity()),
+                () -> assertTrue(output.contains("Current balance: 0 kr."))
+        );
+    }
+
+    @Test
+    void returnsInsertedBalanceWhenUserRequestsChange() {
+        VendingMachine machine = new VendingMachineImpl(catalogWithProducts(), new Payment());
+
+        String output = runUi(machine, "2\n20\n4\n0\n");
+
+        assertAll(
+                () -> assertTrue(output.contains("Accepted 20 kr.")),
+                () -> assertTrue(output.contains("Returning 20 kr.")),
+                () -> assertTrue(output.contains("Current balance: 0 kr.")),
+                () -> assertEquals(0, machine.getBalance())
+        );
+    }
+
+    @Test
+    void returnsRemainingBalanceWhenInputEnds() {
+        VendingMachine machine = new VendingMachineImpl(catalogWithProducts(), new Payment());
+
+        String output = runUi(machine, "2\n10\n");
+
+        assertAll(
+                () -> assertTrue(output.contains("Accepted 10 kr.")),
+                () -> assertTrue(output.contains("Input closed. Goodbye!")),
+                () -> assertTrue(output.contains("Returning 10 kr.")),
+                () -> assertEquals(0, machine.getBalance())
         );
     }
 
