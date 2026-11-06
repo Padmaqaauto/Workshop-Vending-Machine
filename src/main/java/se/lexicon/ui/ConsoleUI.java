@@ -23,12 +23,15 @@ public final class ConsoleUI {
     }
 
     public void run() {
+        // System.out.println("Welcome to the Lexicon Vending Machine!");
+
         displayWelcome();
         displayProducts();
 
         boolean running = true;
 
         while (running) {
+            // displayProducts();
             displayBalance();
             displayMenu();
 
