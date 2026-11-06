@@ -1,4 +1,4 @@
-package se.lexicon.payment;
+package se.lexicon.vendingmachine.payment;
 
 public class Payment {
     private int balance;
