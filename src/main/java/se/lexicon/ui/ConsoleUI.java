@@ -24,9 +24,9 @@ public final class ConsoleUI {
 
     public void run() {
         System.out.println("Welcome to the Lexicon Vending Machine!");
+        displayProducts();
         boolean running = true;
         while (running) {
-            displayProducts();
             displayBalance();
             displayMenu();
             String input = readInput("Choose an option: ");
