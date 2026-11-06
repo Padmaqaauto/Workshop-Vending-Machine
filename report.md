@@ -13,7 +13,8 @@ Anas suggested that some tasks would require more work depending on how much eff
 The responsibilities were divided as follows:
 
 - **Modeling and Class Diagram** — Anas, Tukue
-- **Product** — Jay, Padma
+- **Product** — Jay
+- **Purchase Result, Purchase Status** - Padma
 - **Vending Implementation Logic & Console Menu** — Tukue, Vesalina
 - **JUnit** — Carl, Anas
 - **Coding Review** — All
