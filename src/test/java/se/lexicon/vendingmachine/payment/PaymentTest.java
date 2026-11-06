@@ -1,5 +1,5 @@
 
-package se.lexicon.payment;
+package se.lexicon.vendingmachine.payment;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

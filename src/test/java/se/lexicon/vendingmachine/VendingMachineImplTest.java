@@ -219,5 +219,4 @@ class VendingMachineImplTest {
 
         assertEquals(1, machine.getProducts().size());
     }
-
 }
