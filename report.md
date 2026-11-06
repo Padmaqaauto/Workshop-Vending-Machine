@@ -62,3 +62,4 @@ We had our meeting at **10:00**, where we reviewed our code together, fixed issu
 - We discussed the **optional challenge**, where we talked about implementing a **restock function**. Jay agreed to try it out.
 - Anas was done with the **JUnit testing**.
 - Jay completed the **restocking function** and pushed it to the **main branch**.
+- Jay also updated the code to fix potential bugs and ran JUnit tests for the **restocking functionality**.
