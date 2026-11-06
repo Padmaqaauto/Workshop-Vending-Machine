@@ -1,141 +1,239 @@
-# Workshop-Vending-Machine
+# Lexicon Workshop — Vending Machine
 
-## Build and run the console application
+A Java 25 console application developed for the Lexicon object-oriented programming (OOP) workshop. The application sells snacks, beverages, and fruit, accepts predefined Swedish coin denominations, manages stock, processes purchases, and returns change. It uses Maven, JUnit 5, and GitHub Actions.
 
-Build the executable JAR from the project root and launch it with:
+**Repository:** https://github.com/Padmaqaauto/Workshop-Vending-Machine
+
+## Requirements and features
+
+- Display available products with ID, name, price, category-specific description, and stock quantity.
+- Accept **1, 2, 5, 10, 20, and 50 kr** coins; reject other values without changing the balance.
+- Purchase by product ID and report `SUCCESS`, `NOT_FOUND`, `INSUFFICIENT_BALANCE`, or `OUT_OF_STOCK`.
+- Leave stock and balance unchanged after an unsuccessful purchase.
+- On success, dispense one product, deduct its price, and automatically return any remaining balance.
+- Return the current balance on request or when the console exits.
+- Keep domain rules separate from console input/output.
+- Build a runnable JAR and verify behavior with automated tests.
+
+The application stores its sample inventory **in memory**. Stock and balance reset when a new process starts; there is no database or persistent storage.
+
+## Quick start
+
+### Prerequisites
+
+- **JDK 25** (`java -version` and `javac -version`)
+- **Maven** (`mvn -version`)
+
+### Build, test, and run
+
+From the repository root:
 
 ```bash
-mvn clean package
+mvn clean verify
 java -jar target/workshop-vending-machine-1.0.0.jar
 ```
 
-The menu lists the sample snacks, beverages, and fruit. Insert accepted coins (1, 2, 5, 10, 20, or 50 kr), purchase a product by ID, return change, or exit. Run automated tests with `mvn test`.
+`mvn clean verify` compiles production and test classes, runs the JUnit tests, and creates the JAR. The Maven JAR plugin sets the manifest entry point to `se.lexicon.Main`.
 
-Maven project for the vending machine workshop. This document captures the planned object model before implementation.
+To run the application in an IDE, launch `se.lexicon.Main.main(String[] args)`.
 
-## Object model
+### Console menu
 
-`Product` is abstract because every stocked item must provide its category-specific description. `Snack`, `Beverage`, and `Fruit` inherit common identity, price, and quantity behavior and implement that description polymorphically. The vending machine contract is an interface so the console UI can use machine behavior without depending on a particular implementation. `VendingMachineImpl` manages products and delegates balance and coin handling to `Payment`. `PurchaseResult` returns a structured outcome to the UI, which is responsible for translating it into console messages.
+```text
+1. Show products
+2. Insert coin
+3. Purchase product
+4. Return change
+0. Exit
+```
 
-## Class diagram
+The program lists products and the balance, and redisplays the menu until the user exits or input ends. Sample inventory is created by `Main`; it includes a snack, two beverages, and a fruit.
+
+**Example purchase:** Insert 50 kr (`2` then `50`), buy the 20 kr Chocolate Bar (`3` then product ID `1`), and receive the product with **30 kr** returned automatically. The balance becomes zero and the product stock decreases by one.
+
+## Architecture
+
+The application separates the console user interface, vending-machine operations, payment, and inventory.
+
+| Class / type | Package | Responsibility |
+|---|---|---|
+| `Main` | `se.lexicon` | Creates the sample catalog, payment object, machine, and console UI; starts the application |
+| `ConsoleUI` | `se.lexicon.ui` | Uses `Scanner` for menu input and displays product, purchase, balance, and refund messages |
+| `VendingMachine` | `se.lexicon.vendingmachine` | Interface exposing coin insertion, balance, product listing, purchasing, and change return |
+| `VendingMachineImpl` | `se.lexicon.vendingmachine` | Coordinates catalog lookup, stock checking, payment deduction, dispensing, and purchase outcomes |
+| `ProductCatalog` | `se.lexicon.vendingmachine.catalog` | Stores `Product` objects in an `ArrayList`, checks duplicate IDs, looks up products, and returns an unmodifiable list snapshot |
+| `Payment` | `se.lexicon.vendingmachine.payment` | Validates coin denominations, maintains the balance, performs conditional deductions, and returns change |
+| `Product` | `se.lexicon.vendingmachine.product` | Abstract base class for shared product identity, price, stock, description, and stock operations |
+| `Snack`, `Beverage`, `Fruit` | `se.lexicon.vendingmachine.product` | Specialized product descriptions for grams, milliliters, and origin |
+| `PurchaseResult` | `se.lexicon.vendingmachine.purchase` | Immutable purchase-result data with status, optional product accessor, missing amount, and returned change |
+| `PurchaseStatus` | `se.lexicon.vendingmachine.purchase` | Enum: `SUCCESS`, `NOT_FOUND`, `INSUFFICIENT_BALANCE`, `OUT_OF_STOCK` |
+
+### UML class diagram — as implemented
 
 ```mermaid
 classDiagram
+    class Main {
+        +main(String[] args) void
+    }
+    class ConsoleUI {
+        -VendingMachine vendingMachine
+        -Scanner scanner
+        +ConsoleUI(VendingMachine machine)
+        +ConsoleUI(VendingMachine machine, Scanner scanner)
+        +run() void
+    }
+    class VendingMachine {
+        <<interface>>
+        +insertCoin(int value) boolean
+        +getBalance() int
+        +getProducts() List~Product~
+        +purchaseProduct(int productId) PurchaseResult
+        +returnChange() int
+    }
+    class VendingMachineImpl {
+        -ProductCatalog productCatalog
+        -Payment payment
+        +VendingMachineImpl(ProductCatalog catalog, Payment payment)
+        +insertCoin(int value) boolean
+        +getBalance() int
+        +getProducts() List~Product~
+        +purchaseProduct(int productId) PurchaseResult
+        +returnChange() int
+    }
+    class ProductCatalog {
+        -List~Product~ products
+        +addProduct(Product product) void
+        +getProductById(int id) Optional~Product~
+        +getAllProducts() List~Product~
+    }
+    class Payment {
+        -int balance
+        +insertCoin(int coin) void
+        +isValidCoin(int coin) boolean
+        +getBalance() int
+        +deductAmount(int amount) boolean
+        +returnChange() int
+    }
     class Product {
         <<abstract>>
         -int id
         -String name
         -int price
         -int quantity
-        #Product(int id, String name, int price, int quantity)
         +getId() int
         +getName() String
         +getPrice() int
         +getQuantity() int
-        +describe() String*
+        +describe() String
         +dispenseOne() boolean
+        +restock(int amount) void
     }
-
     class Snack {
         -int weightGrams
         +Snack(int id, String name, int price, int quantity, int weightGrams)
+        +getWeightGrams() int
         +describe() String
     }
     class Beverage {
         -int volumeMl
         +Beverage(int id, String name, int price, int quantity, int volumeMl)
+        +getVolumeMl() int
         +describe() String
     }
     class Fruit {
         -String origin
         +Fruit(int id, String name, int price, int quantity, String origin)
+        +getOrigin() String
         +describe() String
     }
-
-    class VendingMachine {
-        <<interface>>
-        +insertCoin(int value) boolean
-        +getBalance() int
-        +returnChange() int
-        +purchaseProduct(int productId) PurchaseResult
-        +getProducts() List~Product~
-    }
-    class VendingMachineImpl {
-        -Map~Integer, Product~ products
-        -Payment payment
-        +VendingMachineImpl(Collection~Product~ initialProducts)
-        +addProduct(Product product) void
-        +insertCoin(int value) boolean
-        +getBalance() int
-        +returnChange() int
-        +purchaseProduct(int productId) PurchaseResult
-        +getProducts() List~Product~
-    }
-
-    class Payment {
-        -Set~Integer~ ACCEPTED_COINS
-        -int balance
-        +insertCoin(int coin) boolean
-        +isValidCoin(int coin) boolean
-        +getBalance() int
-        +returnChange() int
-        +deductAmount(int amount) boolean
-    }
-
     class PurchaseResult {
-        <<record>>
-        +Status status
-        +Product product
-        +int change
-        +int missingAmount
+        -PurchaseStatus status
+        -Product product
+        -int missingAmount
+        -int changeReturned
+        +success(Product product, int change)$ PurchaseResult
+        +notFound()$ PurchaseResult
+        +insufficientBalance(Product product, int missingAmount)$ PurchaseResult
+        +outOfStock(Product product)$ PurchaseResult
+        +getStatus() PurchaseStatus
+        +getProduct() Optional~Product~
+        +getMissingAmount() int
+        +getChangeReturned() int
+        +isSuccessful() boolean
     }
-    class Status {
+    class PurchaseStatus {
         <<enumeration>>
         SUCCESS
         NOT_FOUND
         INSUFFICIENT_BALANCE
         OUT_OF_STOCK
     }
-    class ConsoleUI {
-        -VendingMachine machine
-        -Scanner input
-        +run() void
-        -showProducts() void
-        -insertCoin() void
-        -purchase() void
-        -returnChange() void
-        -readInteger() Integer
-    }
-    class Main {
-        +main(String[] args) void
-    }
 
     Product <|-- Snack
     Product <|-- Beverage
     Product <|-- Fruit
     VendingMachine <|.. VendingMachineImpl
-    VendingMachineImpl "1" o-- "0..*" Product : stocks
-    VendingMachineImpl "1" *-- "1" Payment : manages payment
-    VendingMachineImpl ..> PurchaseResult : creates
-    PurchaseResult --> Status : outcome
-    PurchaseResult "0..1" --> Product : purchased product
-    ConsoleUI --> "1" VendingMachine : uses
+    Main ..> ProductCatalog : creates
+    Main ..> Payment : creates
     Main ..> VendingMachineImpl : creates
     Main ..> ConsoleUI : starts
+    ConsoleUI --> VendingMachine : uses
+    VendingMachineImpl --> ProductCatalog : uses
+    VendingMachineImpl --> Payment : uses
+    ProductCatalog "1" o-- "0..*" Product : stores
+    VendingMachineImpl ..> PurchaseResult : creates
+    PurchaseResult --> PurchaseStatus : status
+    PurchaseResult --> "0..1" Product : refers to
 ```
 
-### Key design decisions
+### OOP concepts used
 
-- **Inheritance and polymorphism:** The abstract product base shares common state; each concrete product implements `describe()`. Displaying a product calls this method without checking its concrete type.
-- **Encapsulation:** Product fields and machine state are private. Constructors validate their values, and stock changes through product behavior rather than direct field access.
-- **Interface boundary:** `ConsoleUI` depends on `VendingMachine`, keeping input/output separate from vending machine business rules.
-- **Payment encapsulation:** `Payment` owns the balance and accepted-coin rules. `VendingMachineImpl` delegates payment operations to it instead of storing or changing the balance directly.
-- **Structured purchase outcome:** `PurchaseResult` lets the UI distinguish missing product, insufficient balance, out-of-stock, and successful purchases without embedding console output in machine logic.
-- **Multiplicity:** One machine stocks zero or more products. A purchase result refers to a product when one was found; otherwise its product is absent.
+- **Abstraction and inheritance:** `Product` is abstract; the three product types inherit common behavior.
+- **Polymorphism:** The console calls `Product.describe()` without testing concrete product types. `VendingMachineImpl` fulfills the `VendingMachine` interface.
+- **Encapsulation:** Fields are private and exposed through operations, not direct modification. Constructors validate invalid product values.
+- **Composition and delegation:** `VendingMachineImpl` holds a `ProductCatalog` and `Payment` instance and delegates specialized operations.
+- **Collections and iteration:** `ProductCatalog` uses `ArrayList<Product>`; product lookup and console display iterate over products.
+- **Control flow:** The console uses a `Scanner`, a loop, conditional checks, and `switch` statements.
 
-### Business flow represented by the model
+### Purchase flow
 
-- `insertCoin` accepts only 1, 2, 5, 10, 20, or 50 kr; an invalid coin leaves the balance unchanged, and `ConsoleUI` prints the rejection message.
-- `purchaseProduct` finds by id and reports `NOT_FOUND`, `OUT_OF_STOCK`, or `INSUFFICIENT_BALANCE` without changing funds or stock. The insufficient-balance result carries the missing amount. On success it dispenses one unit, deducts the price through `Payment`, and returns any remaining balance automatically as `PurchaseResult.change`.
-- `returnChange` returns the entire remaining balance and resets it to zero. The UI prints the returned amount or the zero-balance message.
-- `ConsoleUI.run` shows the product list and balance, repeats action prompts until exit, and shows the current balance after every action. `Product.describe()` supplies each type's detail for display and dispensing confirmation.
+1. The console sends a product ID to `VendingMachine.purchaseProduct(id)`.
+2. The implementation looks up the product in `ProductCatalog`.
+3. An unknown ID produces `NOT_FOUND`; zero quantity produces `OUT_OF_STOCK`.
+4. If the balance is too small, `INSUFFICIENT_BALANCE` reports the missing amount without changing stock or balance.
+5. A successful purchase deducts the price, dispenses one unit, returns any remaining balance, and creates `PurchaseResult.success(...)`.
+6. `ConsoleUI` translates the result into a user-facing message.
+
+`PurchaseResult.getProduct()` returns `Optional<Product>`; the underlying stored field is a nullable `Product`. The result validates status/amount combinations, including zero missing amount for `SUCCESS` and positive missing amount for `INSUFFICIENT_BALANCE`.
+
+## Testing and build evidence
+
+Run all tests with:
+
+```bash
+mvn clean test
+```
+
+For a full verified build:
+
+```bash
+mvn clean verify
+```
+
+The suite covers products, catalog operations, coin handling, purchase results, machine logic, and console workflows, including invalid input, insufficient funds, out-of-stock items, unknown IDs, change return, and input closure.
+
+**Verified on 6 November 2026:** The GitHub Actions build for `main` passed **92 tests, 0 failures, 0 errors, 0 skipped**, successfully packaged the JAR, and uploaded it as a workflow artifact. The executable was also launched and confirmed working manually by a team member. See [the successful Maven Build run](https://github.com/Padmaqaauto/Workshop-Vending-Machine/actions/runs/42223182591).
+
+**Manual final-check walkthrough:** Run the JAR, display products, insert a valid coin, reject an invalid coin, buy with exact payment, buy with overpayment, attempt an insufficient-balance purchase, select an unknown ID, return change, and exit. Unit and console tests cover those cases automatically, but a live terminal run remains useful for presentation readiness.
+
+## Optional enhancement and current limitations
+
+`Product.restock(int amount)` is implemented and tested as a stock-management operation. It increases product quantity for a positive amount. **The current console menu does not expose a staff restocking option.** Further ideas such as card/Swish payment and a graphical interface are documented in [`improvement.md`](improvement.md) and are **not implemented**.
+
+The project intentionally uses in-memory products and a console UI; it does not have persistent storage, authentication, or payment-provider integration. Do not treat those as missing workshop deliverables unless required by the instructor.
+
+## Team and project documents
+
+The six workshop members are **Anas, Carl, Jay, Padma, Tukue, and Veselina**. Based on the team report, responsibilities were shared across product modeling, payment, purchase results, vending logic, console development, testing, review, and reporting. Consult [`report.md`](report.md) for the team's contribution history, [`Team-Checklist.md`](Team-Checklist.md) for completion evidence and outstanding handoff tasks, and [`CodingStandards.md`](CodingStandards.md) for the development guide.
+
+The repository source code and tests are the authoritative reference for the implemented API. Historical planning documents may describe earlier class names or package layouts.
