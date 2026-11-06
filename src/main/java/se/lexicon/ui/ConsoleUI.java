@@ -51,6 +51,7 @@ public final class ConsoleUI {
                     }
 
                     System.out.println("Thank you for using the vending machine. Goodbye!");
+                    System.out.println("Goodbye!");
                     running = false;
                 }
                 default -> System.out.println("Invalid menu option. Please choose 0–4.");
