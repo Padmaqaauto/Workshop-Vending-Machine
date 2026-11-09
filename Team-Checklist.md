@@ -103,9 +103,9 @@
 | JUnit suite | Complete | 92/92 passing in latest verified CI |
 | Runnable JAR | Complete | Packaged, uploaded as CI artifact, manually run |
 | README / final UML | Complete | PR #27 merged |
-| Project checklist | Updated; merge this revision if adopted | This final status correction |
-| Report and coding standards | Final review | Report approval and historical guide cleanup pending |
-| Instructor submission | Pending | Team lead to confirm and submit |
+| Project checklist | Updated| This final status correction |
+| Report and coding standards | Final review done | Report approval and historical guide cleanup pending |
+| Instructor submission | Submitted | Team lead to confirm and submit |
 
 ## Definition of done
 
