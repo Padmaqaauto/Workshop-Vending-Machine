@@ -60,7 +60,7 @@
 - [x] Maven compilation, testing and JAR packaging succeed in CI.
 - [x] GitHub Actions successfully uploads the JAR artifact.
 - [x] JUnit contribution merged through PR #20.
-- [ ] Attach a final screenshot or CI evidence to the report **only if required** by the instructor.
+- [x] Attach a final screenshot or CI evidence to the report **only if required** by the instructor.
 
 ## 6. Integration and GitHub
 
@@ -80,7 +80,7 @@
 - [x] `Team-Checklist.md` prepared and merged in PR #27.
 - [x] `report.md` exists and records team work and project development.
 - [x] `improvement.md` documents proposed future features.
-- [ ] Team lead confirms that the final report is accurate, complete and approved.
+- [x] Team lead confirms that the final report is accurate, complete and approved.
 
 ## 8. Final submission
 
@@ -88,8 +88,8 @@
 - [x] Automated test suite passing on `main`.
 - [x] Executable JAR built and run locally.
 - [x] Documentation changes merged into `main`.
-- [ ] Team lead gives final submission approval.
-- [ ] Submit repository link and any required report/JAR/test evidence to the instructor.
+- [x] Team lead gives final submission approval.
+- [x] Submit repository link and any required report/JAR/test evidence to the instructor.
 
 ## Team completion overview
 
